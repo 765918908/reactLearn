@@ -4,4 +4,4 @@ function Getup () {
     <h2>程序员早起攻略</h2>
   )
 }
-export default Getup
+export default Getup;
