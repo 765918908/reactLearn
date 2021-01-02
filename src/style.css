@@ -1,0 +1,21 @@
+.input{
+    margin-top: 15px;
+    margin-left: 15px;
+}
+
+.flex{
+    display: flex;
+}
+.justify-between{
+    justify-content: space-between;
+}
+.bg-green{
+    background-color: greenyellow;
+}
+.wrapp{
+    margin: 20px;
+}
+.total{
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
