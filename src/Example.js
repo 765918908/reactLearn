@@ -14,6 +14,7 @@ function Example() {
     const [moneyValue, setMoneyValue] = useState(0)//价格
     const [taskValue, setTaskValue] = useState('任务A')//任务
     const [finishList, setFinishList] = useState([])
+    const [total, setTotal] = useState(0)
     const [open, setOpen] = useState(false)
 
     const [moneyChangeValue, setMoneyChangeValue] = useState([0])
@@ -61,7 +62,14 @@ function Example() {
             rnb: rnb,
             rub: rub
         }
+        setMoneyValue(0)
+        setTaskValue('')
+        setMoneyChangeValue(0)
         setFinishList([...finishList, o])
+        console.log('parseInt(total)', parseInt(total))
+        console.log('(total)', (total))
+        let newTotal = parseInt(total) + parseInt(moneyValue)
+        setTotal(newTotal)
         return;
     }
 
@@ -108,7 +116,7 @@ function Example() {
                             }
                         </div>
 
-                        <div className="total">总支出:100美元</div>
+                        <div className="total">总支出:{total}{defaultValue}</div>
 
                     </div>
 
