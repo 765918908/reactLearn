@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import "antd/dist/antd.css"
 import "./Example.css"
-import { Button, Input, Select } from 'antd';
+import { Button, Input, Select, Spin } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import axios from "axios"
 
@@ -14,7 +14,9 @@ function Example() {
     const [moneyValue, setMoneyValue] = useState(0)//价格
     const [taskValue, setTaskValue] = useState('任务A')//任务
     const [finishList, setFinishList] = useState([])
+    const [hasFinishList, setHasFinishList] = useState([])
     const [total, setTotal] = useState(0)
+    const [hasTotal, setHasTotal] = useState(0)
     const [open, setOpen] = useState(false)
 
     const [moneyChangeValue, setMoneyChangeValue] = useState([0])
@@ -60,7 +62,7 @@ function Example() {
             moneyValue: moneyValue,
             dollar: dollar,
             rnb: rnb,
-            rub: rub
+            rub: rub,
         }
         setMoneyValue(0)
         setTaskValue('')
@@ -73,8 +75,34 @@ function Example() {
         return;
     }
 
+    function onChange(e) {
+        console.log('onChange..', e)
+        let index = e.target.value
+        moveItem(index)
+    }
+
+    function moveItem(index) {
+        console.log('index...', index)
+        // finishList.
+        console.log(finishList)
+        let list = finishList
+        let item = list[index]
+        console.log(item)
+        setTotal(total - parseInt(item.moneyValue))
+        setHasTotal(hasTotal + parseInt(item.moneyValue))
+        list.splice(index, 1)
+        setFinishList([...list])
+        let hasList = hasFinishList
+        setHasFinishList([item, ...hasList])
+    }
+
     return (
         <div className="wrapp">
+
+
+
+
+            <Spin spinning={!open} className="loading" />
 
             <Input value={taskValue} onChange={(e) => setTaskValue(e.target.value)} addonBefore="任务" className="input" style={{ width: `200px` }} placeholder="请输入任务名称"></Input><br />
 
@@ -102,8 +130,8 @@ function Example() {
                                 finishList.map((val, index) => {
                                     return (
                                         <>
-                                            <div key={index + val} className="item">
-                                                <Checkbox  ></Checkbox>
+                                            <div key={index} className="item">
+                                                <Checkbox checked={false} key={index} value={index} onChange={onChange} ></Checkbox>
                                                 <div>任务名:{val.taskValue}</div>
                                                 <div>卢布:{val.rub}</div>
                                                 <div>人民币:{val.rnb}</div>
@@ -123,16 +151,26 @@ function Example() {
                     <div className="finish">
                         <div className="title bg-green">已完成</div>
                         <div className="scroll-box">
-                            <div>
-                                <Checkbox></Checkbox>
-                                <div>任务名:A计划</div>
-                                <div>卢布:1</div>
-                                <div>人民币:1</div>
-                                <div>美元 :1</div>
-                            </div>
-                            <div>总支出:100美元</div>
 
+                            {
+                                hasFinishList.map((val, index) => {
+                                    return (
+                                        <>
+                                            <div key={index + val} className="item">
+                                                <Checkbox checked={true} dispatch ></Checkbox>
+                                                <div>任务名:<del> {val.taskValue}</del></div>
+                                                <div>卢布:{val.rub}</div>
+                                                <div>人民币:{val.rnb}</div>
+                                                <div>美元 :{val.dollar}</div>
+                                            </div>
+                                        </>
+                                    )
+
+                                })
+                            }
                         </div>
+                        <div className="total">总支出:{hasTotal}{defaultValue}</div>
+
                     </div>
                 </div>
             </div>
